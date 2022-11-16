@@ -7,6 +7,9 @@ import Post from '../components/post';
 export default function Home() {
   const audio = useRef(null);
   const videos = useRef([]);
+  const startedRef = useRef(false);
+
+  const [timer, setTimer] = useState(null);
 
   const [posts, setPosts] = useState(() => {
     let post = data.posts;
@@ -25,35 +28,36 @@ export default function Home() {
   const startAudio = () => {
     console.log('Starting the show');
 
+    setTimer(
+      setTimeout(() => {
+        videos.current.forEach((video) => {
+          video.play(0);
+        });
+      }, 124560)
+    );
+
+    /* setStarted(true); */
+    startedRef.current = true;
+    audio.current.currentTime = 0;
+    audio.current.play();
+
     console.log(audio.current.currentTime);
     videos.current.forEach((video) => {
-      /*  console.log(video); */
       video.play(0);
-      /*  setTimeout(() => {
-        video.currentTime = 0;
-        video.play();
-      }, 0); */
     });
-    /*    videos.current.forEach((video) => {
-      setTimeout(() => {
-        video.currentTime = 0;
-        video.play();
-        console.log('loop!');
-      }, 4000);
-    }); */
-
-    setTimeout(() => {
-      audio.current.currentTime = 0;
-      audio.current.play();
-    }, 500);
   };
   const stopAudio = () => {
     console.log('Starting the show');
+    startedRef.current = false;
+    /*   setStarted(false); */
 
     videos.current.forEach((video) => {
       video.currentTime = 0;
       video.pause();
     });
+
+    clearTimeout(timer);
+    setTimer(null);
 
     audio.current.currentTime = 0;
     audio.current.pause();
@@ -92,21 +96,6 @@ export default function Home() {
         loader={<h3> Loading...</h3>}
         endMessage={<h4>Nothing more to show</h4>}
       >
-        {/* {posts.map(({ desc, video, name }, index) => (
-          <div key={index} className="post">
-            <div className="name">{name}</div>
-            <video
-              className="video"
-              ref={(ref) => (videos.current = [...videos.current, ref])}
-              muted
-              src={video}
-            ></video>
-            <div className="desc">
-              <div className="descName">{name}</div>
-              {desc}
-            </div>
-          </div>
-        ))} */}
         {posts.map((currentPost, index) => (
           <Post
             key={index}
@@ -114,6 +103,7 @@ export default function Home() {
             ref={(el) => (videos.current[index] = el)}
             index={index}
             audioRef={audio}
+            started={startedRef}
           />
         ))}
       </InfiniteScroll>

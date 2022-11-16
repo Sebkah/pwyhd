@@ -1,23 +1,8 @@
 import { useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { useIntersectionObserver } from 'react-intersection-observer-hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
 
-/* export const Post = (post, ref) => {
-  const { name, video, desc } = post;
-  console.log(ref);
-  return (
-    <div className="post">
-      <div className="name">{name}</div>
-      <video className="video" ref={ref} muted src={video}></video>
-      <div className="desc">
-        <div className="descName">{name}</div>
-        {desc}
-      </div>
-    </div>
-  );
-}; */
+import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Post = forwardRef((props, ref) => {
   const [refObs, { entry }] = useIntersectionObserver();
@@ -37,21 +22,38 @@ const Post = forwardRef((props, ref) => {
       videoRef.current.pause();
     },
   }));
-  /*   console.log(props.audioRef); */
 
-  const internalFunction = () => {
-    // access textAreaRef
+  const calculateTimings = (time) => {
+    console.log(time);
+    if (time < 35.56) return time;
+    if (time < 71.112) return time - 35.56;
+    if (time < 124.56) return -1;
+    if (time < 160.12) return time - 124.56;
+    if (time < 195.68) return time - 160.12;
+
+    return -1;
   };
 
+  //visibilty update
   useEffect(() => {
+    const time = calculateTimings(props.audioRef.current.currentTime);
+    if (time == -1) videoRef.current.currentTime = 1555550;
     if (!isVisible) {
       videoRef.current.pause();
     }
-    if (isVisible) {
-      videoRef.current.currentTime = props.audioRef.current.currentTime - 500;
+    if (isVisible && props.started.current && time != -1) {
+      videoRef.current.currentTime = time;
       videoRef.current.play();
     }
   }, [isVisible]);
+
+  //onVideoEnd
+  const onEnded = () => {
+    const time = calculateTimings(props.audioRef.current.currentTime);
+    if (time == -1) return;
+    videoRef.current.currentTime = time;
+    videoRef.current.play();
+  };
 
   const { name, video, desc } = props.post;
   /*  console.log(post); */
@@ -61,7 +63,14 @@ const Post = forwardRef((props, ref) => {
         <div className="name">{name}</div>
         <FontAwesomeIcon className="dots" icon={faDotCircle} />
       </div>
-      <video className="video" ref={videoRef} muted src={video}></video>
+      <video
+        onEnded={onEnded}
+        className="video"
+        /* controls */
+        ref={videoRef}
+        muted
+        src={video}
+      ></video>
       <div className="desc">
         <div className="descName">{name}</div>
         {desc}
