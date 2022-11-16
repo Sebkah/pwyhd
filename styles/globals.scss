@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 html,
 body {
   padding: 0;
@@ -6,7 +7,8 @@ body {
 
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    background-color: white;
+    background-color: black;
+    color: white;
 }
 
 a {
@@ -19,19 +21,50 @@ a {
 
 }
 
+.container {
+  position: relative;
+}
+
+.top-bar{
+  z-index: 1000;
+  position: sticky;
+  top: 0px;
+  font-family: Lobster;
+  font-size: 7vw;
+  margin: 3vw;
+  height: 7vh;
+  background: black;
+}
 
 
+.post:first-of-type{
+  margin: 0 auto;
+}
 .post{
   display: block;
   position: relative;
-  width: 40%;
+  width: max(40%, 600px);
   margin: 30px auto;
   border: lightgrey 1px solid;
   border-radius: 1em;
+
+  @media (max-width: 1000px) {
+  width: 100%;
+  }
   
 
-  .name{
+  .post-title{
+    display: flex;
     padding: 1em;
+
+    .dots{
+  
+      width: 100%;
+      height: 40px;
+      color: black;
+      
+    
+    }
   }
 
   .video{
@@ -55,6 +88,8 @@ a {
 }
 
 .controls {
+  z-index: 10000;
+/*   display: none; */
   position: fixed;
 }
 
@@ -67,3 +102,4 @@ a {
     background: black;
   }
 } */
+

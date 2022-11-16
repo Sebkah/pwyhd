@@ -1,5 +1,8 @@
 import { useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { useIntersectionObserver } from 'react-intersection-observer-hook';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
 
 /* export const Post = (post, ref) => {
   const { name, video, desc } = post;
@@ -16,7 +19,7 @@ import { useIntersectionObserver } from 'react-intersection-observer-hook';
   );
 }; */
 
-const Post = forwardRef((post, ref) => {
+const Post = forwardRef((props, ref) => {
   const [refObs, { entry }] = useIntersectionObserver();
   const isVisible = entry && entry.isIntersecting;
 
@@ -24,13 +27,17 @@ const Post = forwardRef((post, ref) => {
 
   // all the functions or values you can expose here
   useImperativeHandle(ref, () => ({
-    play: () => {
-      if (isVisible) videoRef.current.play();
+    play: (time) => {
+      if (isVisible) {
+        videoRef.current.currentTime = time;
+        videoRef.current.play();
+      }
     },
     pause: () => {
       videoRef.current.pause();
     },
   }));
+  /*   console.log(props.audioRef); */
 
   const internalFunction = () => {
     // access textAreaRef
@@ -41,15 +48,19 @@ const Post = forwardRef((post, ref) => {
       videoRef.current.pause();
     }
     if (isVisible) {
+      videoRef.current.currentTime = props.audioRef.current.currentTime - 500;
       videoRef.current.play();
     }
   }, [isVisible]);
 
-  const { name, video, desc } = post.post;
+  const { name, video, desc } = props.post;
   /*  console.log(post); */
   return (
     <div className="post" ref={refObs}>
-      <div className="name">{name}</div>
+      <div className="post-title">
+        <div className="name">{name}</div>
+        <FontAwesomeIcon className="dots" icon={faDotCircle} />
+      </div>
       <video className="video" ref={videoRef} muted src={video}></video>
       <div className="desc">
         <div className="descName">{name}</div>
