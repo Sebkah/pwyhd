@@ -1,12 +1,22 @@
-import { useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
+import {
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from 'react';
 import { useIntersectionObserver } from 'react-intersection-observer-hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 const Post = forwardRef((props, ref) => {
   const [refObs, { entry }] = useIntersectionObserver();
   const isVisible = entry && entry.isIntersecting;
+
+  const [cacheVisibility, setCache] = useState(true);
 
   const videoRef = useRef();
 
@@ -37,41 +47,44 @@ const Post = forwardRef((props, ref) => {
   //visibilty update
   useEffect(() => {
     const time = calculateTimings(props.audioRef.current.currentTime);
-    /*  if (time == -1) videoRef.current.currentTime = 1555550; */
     if (!isVisible) {
       videoRef.current.pause();
     }
-    if (isVisible && props.started.current /*  && time != -1 */) {
+    if (isVisible /*  && props.started.current */) {
       videoRef.current.currentTime = time;
       videoRef.current.play();
     }
   }, [isVisible]);
 
-  //onVideoEnd
-  /* const onEnded = () => {
-    const time = calculateTimings(props.audioRef.current.currentTime);
-    if (time == -1) return;
-    videoRef.current.currentTime = time;
-    videoRef.current.play();
-  }; */
-
-  //onTimeUpate
+  //onTimeUpate, fires when video is playing
   const onTimeUpdate = () => {
     const time = calculateTimings(props.audioRef.current.currentTime);
     videoRef.current.currentTime = time;
+    setCache(false);
+    if (time == -1) setCache(true);
   };
 
   const { name, video, desc } = props.post;
-  /*  console.log(post); */
+
   return (
     <div className="post" ref={refObs}>
       <div className="post-title">
         <div className="name">{name}</div>
         <FontAwesomeIcon className="dots" icon={faDotCircle} />
       </div>
-      <div className="cache"></div>
+
+      <AnimatePresence>
+        {cacheVisibility && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="cache"
+          ></motion.div>
+        )}
+      </AnimatePresence>
+
       <video
-        /*  onEnded={onEnded} */
         className="video"
         onTimeUpdate={onTimeUpdate}
         /* controls */

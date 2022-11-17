@@ -2,12 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 html,
 body {
+  position: relative;
   padding: 0;
   margin: 0;
 
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     background-color: black;
+    z-index: -10000000;
     color: white;
 }
 
@@ -55,6 +57,7 @@ audio{
 .post{
   display: block;
   position: relative;
+  background-color: transparent;
 
   margin: 30px auto;
   border: lightgrey 1px solid;
@@ -63,7 +66,9 @@ audio{
 
 
   .cache{
-    display: none;
+    /* display: none; */
+    top: 0;
+    z-index: -1;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -86,7 +91,9 @@ audio{
   }
 
   .video{
+    position: relative;
     width: 100%;
+    z-index: -4;
   }
 
   .desc{
