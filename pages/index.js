@@ -28,13 +28,13 @@ export default function Home() {
   const startAudio = () => {
     console.log('Starting the show');
 
-    setTimer(
+    /*   setTimer(
       setTimeout(() => {
         videos.current.forEach((video) => {
           video.play(0);
         });
       }, 124560)
-    );
+    ); */
 
     /* setStarted(true); */
     startedRef.current = true;
@@ -79,7 +79,8 @@ export default function Home() {
           console.log(audio.current.currentTime);
         }} */
         ref={audio}
-        /* controls  */ src="audio.mp3"
+        controls
+        src="audio.mp3"
       ></audio>
 
       <div className="top-bar">Arigato Massai</div>

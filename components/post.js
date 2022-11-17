@@ -24,7 +24,7 @@ const Post = forwardRef((props, ref) => {
   }));
 
   const calculateTimings = (time) => {
-    console.log(time);
+    /*   console.log(time); */
     if (time < 35.56) return time;
     if (time < 71.112) return time - 35.56;
     if (time < 124.56) return -1;
@@ -37,22 +37,28 @@ const Post = forwardRef((props, ref) => {
   //visibilty update
   useEffect(() => {
     const time = calculateTimings(props.audioRef.current.currentTime);
-    if (time == -1) videoRef.current.currentTime = 1555550;
+    /*  if (time == -1) videoRef.current.currentTime = 1555550; */
     if (!isVisible) {
       videoRef.current.pause();
     }
-    if (isVisible && props.started.current && time != -1) {
+    if (isVisible && props.started.current /*  && time != -1 */) {
       videoRef.current.currentTime = time;
       videoRef.current.play();
     }
   }, [isVisible]);
 
   //onVideoEnd
-  const onEnded = () => {
+  /* const onEnded = () => {
     const time = calculateTimings(props.audioRef.current.currentTime);
     if (time == -1) return;
     videoRef.current.currentTime = time;
     videoRef.current.play();
+  }; */
+
+  //onTimeUpate
+  const onTimeUpdate = () => {
+    const time = calculateTimings(props.audioRef.current.currentTime);
+    videoRef.current.currentTime = time;
   };
 
   const { name, video, desc } = props.post;
@@ -63,13 +69,16 @@ const Post = forwardRef((props, ref) => {
         <div className="name">{name}</div>
         <FontAwesomeIcon className="dots" icon={faDotCircle} />
       </div>
+      <div className="cache"></div>
       <video
-        onEnded={onEnded}
+        /*  onEnded={onEnded} */
         className="video"
+        onTimeUpdate={onTimeUpdate}
         /* controls */
         ref={videoRef}
         muted
         src={video}
+        loop
       ></video>
       <div className="desc">
         <div className="descName">{name}</div>
