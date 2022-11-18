@@ -25,6 +25,9 @@ export default function Home() {
   useEffect(() => {
     console.log(videos.current);
   }, []);
+  useEffect(() => {
+    console.log(posts.length);
+  }, [posts.length]);
 
   return (
     <div className="container">
@@ -37,23 +40,30 @@ export default function Home() {
 
       <div className="top-bar">Arigato Massai</div>
 
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={getMorePost}
-        hasMore={true}
-        loader={<h3> Loading...</h3>}
-        endMessage={<h4>Nothing more to show</h4>}
-      >
-        {posts.map((currentPost, index) => (
-          <Post
-            key={index}
-            post={currentPost}
-            ref={(el) => (videos.current[index] = el)}
-            audioRef={audio}
-            /*      started={startedRef} */
-          />
-        ))}
-      </InfiniteScroll>
+      {
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={getMorePost}
+          hasMore={true}
+          loader={<h3> Loading...</h3>}
+          endMessage={<h4>Nothing more to show</h4>}
+        >
+          {posts.map((currentPost, index) => (
+            <Post
+              key={index}
+              post={currentPost}
+              ref={(el) => (videos.current[index] = el)}
+              audioRef={audio}
+            />
+          ))}
+        </InfiniteScroll>
+      }
+      {/*   <Post
+     
+        post={posts[0]}
+        ref={(el) => (videos.current[0] = el)}
+        audioRef={audio}
+      /> */}
     </div>
   );
 }

@@ -13,7 +13,7 @@ import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Post = forwardRef((props, ref) => {
-  const [refObs, { entry }] = useIntersectionObserver();
+  const [refObs, { entry }] = useIntersectionObserver({ rootMargin: '500px' });
   const isVisible = entry && entry.isIntersecting;
 
   const [cacheVisibility, setCache] = useState(true);
@@ -47,10 +47,10 @@ const Post = forwardRef((props, ref) => {
   //visibilty update
   useEffect(() => {
     const time = calculateTimings(props.audioRef.current.currentTime);
-    if (!isVisible) {
+    if (!isVisible && videoRef.current) {
       videoRef.current.pause();
     }
-    if (isVisible /*  && props.started.current */) {
+    if (isVisible && videoRef.current /*  && props.started.current */) {
       videoRef.current.currentTime = time;
       videoRef.current.play();
     }
@@ -58,6 +58,7 @@ const Post = forwardRef((props, ref) => {
 
   //onTimeUpate, fires when video is playing
   const onTimeUpdate = () => {
+    console.log(isVisible);
     const time = calculateTimings(props.audioRef.current.currentTime);
     videoRef.current.currentTime = time;
     setCache(false);
@@ -73,7 +74,7 @@ const Post = forwardRef((props, ref) => {
         <FontAwesomeIcon className="dots" icon={faDotCircle} />
       </div>
 
-      <AnimatePresence>
+      {/*    <AnimatePresence>
         {cacheVisibility && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -82,17 +83,19 @@ const Post = forwardRef((props, ref) => {
             className="cache"
           ></motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
+      {isVisible && (
+        <video
+          className="video"
+          onTimeUpdate={onTimeUpdate}
+          /* controls */
+          ref={videoRef}
+          muted
+          src={video}
+          loop
+        ></video>
+      )}
 
-      <video
-        className="video"
-        onTimeUpdate={onTimeUpdate}
-        /* controls */
-        ref={videoRef}
-        muted
-        src={video}
-        loop
-      ></video>
       <div className="desc">
         <div className="descName">{name}</div>
         {desc}
