@@ -73,7 +73,9 @@ const Post = forwardRef((props, ref) => {
   const onTimeUpdate = () => {
     console.log(isVisible);
     const time = calculateTimings(props.audioRef.current.currentTime);
-    videoRef.current.currentTime = time;
+    if (Math.abs(videoRef.current.currentTime - time > 0.3)) {
+      videoRef.current.currentTime = time;
+    }
     setCache(false);
     setLyric(lyrics(props.audioRef.current.currentTime));
     if (time == -1) setCache(true);

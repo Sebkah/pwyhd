@@ -8,7 +8,7 @@ body {
 
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    background-color: darkgray;
+    background-color: black;
     z-index: -10000000;
     color: white;
 }
@@ -97,7 +97,7 @@ audio{
   }
 
   .desc{
-    padding: 1em;
+    padding: 0.5vh 1em;
   /*   display: block; */
     position: relative;
     text-align: justify;
