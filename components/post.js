@@ -109,6 +109,7 @@ const Post = forwardRef((props, ref) => {
           ref={videoRef}
           muted
           src={video}
+          preload
           loop
         ></video>
       )}
