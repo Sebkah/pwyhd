@@ -13,10 +13,13 @@ import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Post = forwardRef((props, ref) => {
-  const [refObs, { entry }] = useIntersectionObserver({ rootMargin: '500px' });
+  const [refObs, { entry }] = useIntersectionObserver({
+    /* rootMargin: '50%'  */
+  });
   const isVisible = entry && entry.isIntersecting;
 
   const [cacheVisibility, setCache] = useState(true);
+  const [lyric, setLyric] = useState(true);
 
   const videoRef = useRef();
 
@@ -44,6 +47,16 @@ const Post = forwardRef((props, ref) => {
     return -1;
   };
 
+  const lyrics = (time) => {
+    if (time < 35.56) return 'Praise';
+    if (time < 71.112) return 'PRAISE';
+    if (time < 124.56) return 'Now whistle';
+    if (time < 160.12) return 'Praise';
+    if (time < 195.68) return 'PRAISE';
+
+    return -1;
+  };
+
   //visibilty update
   useEffect(() => {
     const time = calculateTimings(props.audioRef.current.currentTime);
@@ -62,6 +75,7 @@ const Post = forwardRef((props, ref) => {
     const time = calculateTimings(props.audioRef.current.currentTime);
     videoRef.current.currentTime = time;
     setCache(false);
+    setLyric(lyrics(props.audioRef.current.currentTime));
     if (time == -1) setCache(true);
   };
 
@@ -74,16 +88,19 @@ const Post = forwardRef((props, ref) => {
         <FontAwesomeIcon className="dots" icon={faDotCircle} />
       </div>
 
-      {/*    <AnimatePresence>
-        {cacheVisibility && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="cache"
-          ></motion.div>
-        )}
-      </AnimatePresence> */}
+      {
+        <AnimatePresence>
+          {cacheVisibility && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="cache"
+            ></motion.div>
+          )}
+        </AnimatePresence>
+      }
+
       {isVisible && (
         <video
           className="video"
@@ -99,6 +116,10 @@ const Post = forwardRef((props, ref) => {
       <div className="desc">
         <div className="descName">{name}</div>
         {desc}
+      </div>
+      <div className="desc">
+        <div className="descName">Arigato Massai</div>
+        {lyric}
       </div>
     </div>
   );
