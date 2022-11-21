@@ -1,8 +1,11 @@
+import { TopBar } from './TopBar';
 import Head from 'next/head';
 import data from '../components/data.json';
 import { useRef, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Post from '../components/post';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
   const audio = useRef(null);
@@ -38,7 +41,7 @@ export default function Home() {
       </Head>
       <audio ref={audio} controls src="audio.mp3"></audio>
 
-      <div className="top-bar">Arigato Massai</div>
+      <TopBar faAngleDown={faAngleDown} />
 
       {
         <InfiniteScroll
