@@ -9,6 +9,7 @@ import { useIntersectionObserver } from 'react-intersection-observer-hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -19,7 +20,7 @@ const Post = forwardRef((props, ref) => {
   const isVisible = entry && entry.isIntersecting;
 
   const [cacheVisibility, setCache] = useState(true);
-  const [lyric, setLyric] = useState(true);
+  const [lyric, setLyric] = useState([]);
 
   const videoRef = useRef();
 
@@ -48,13 +49,37 @@ const Post = forwardRef((props, ref) => {
   };
 
   const lyrics = (time) => {
-    if (time < 35.56) return 'Praise';
-    if (time < 71.112) return 'PRAISE';
-    if (time < 124.56) return 'Now whistle';
-    if (time < 160.12) return 'Praise';
-    if (time < 195.68) return 'PRAISE';
+    if (time < 0.5) return [];
+    if (time < 1) return ['PRAISE!! '];
+    if (time < 3) return ['Praise what you'];
+    if (time < 7) return ['Praise what you have done'];
+    if (time < 9) return ['Praise what you have done!! :blush:', 'For the'];
+    if (time < 10.5) return ['Praise what you have done!!', 'For the THINGS'];
+    if (time < 11)
+      return ['Praise what you have done ', 'For the things that you'];
+    if (time < 15.5)
+      return [
+        'Praise what you have done!!',
+        'For the things that you have done!!!',
+      ];
+    if (time < 25)
+      return [
+        'Praise what you have done',
+        'For the things that you have done',
+        ,
+        'For the things that you have done',
+      ];
+    if (time < 38)
+      return [
+        'Praise what you have done',
+        'For the things that you have done',
+        ,
+        'For the things that you have done',
+        ,
+        'For the things that you have done',
+      ];
 
-    return -1;
+    return ['Praise'];
   };
 
   //visibilty update
@@ -81,13 +106,19 @@ const Post = forwardRef((props, ref) => {
     if (time == -1) setCache(true);
   };
 
-  const { name, video, desc } = props.post;
+  const { name, video, desc, slug } = props.post;
 
   return (
     <div className="post" ref={refObs}>
       <div className="post-title">
-        <div className="name">{name}</div>
-        <FontAwesomeIcon className="dots" icon={faDotCircle} />
+        <div className="name">
+          <div className="profile-picture">
+            <img src={'/pics/' + slug + '.jpg'} />
+          </div>
+
+          {name}
+        </div>
+        {<FontAwesomeIcon className="dots" icon={faEllipsisVertical} />}
       </div>
 
       {
@@ -103,27 +134,38 @@ const Post = forwardRef((props, ref) => {
         </AnimatePresence>
       }
 
-      {isVisible && (
-        <video
-          className="video"
-          onTimeUpdate={onTimeUpdate}
-          /* controls */
-          ref={videoRef}
-          muted
-          src={video}
-          preload
-          loop
-        ></video>
-      )}
+      <div className="placeHolder">
+        {isVisible && (
+          <video
+            className="video"
+            onTimeUpdate={onTimeUpdate}
+            /* controls */
+            ref={videoRef}
+            muted
+            src={video}
+            preload
+            loop
+          ></video>
+        )}
+      </div>
 
       <div className="desc">
         <div className="descName">{name}</div>
         {desc}
       </div>
-      <div className="desc">
-        <div className="descName">Arigato Massai</div>
-        {lyric}
-      </div>
+      {lyric.map((lyr, index) => (
+        <AnimatePresence key={index}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="desc"
+          >
+            <div className="descName">Arigato Massai</div>
+            {lyr}
+          </motion.div>
+        </AnimatePresence>
+      ))}
     </div>
   );
 });

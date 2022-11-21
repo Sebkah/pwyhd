@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 html,
 body {
@@ -6,11 +6,11 @@ body {
   padding: 0;
   margin: 0;
 
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    background-color: black;
-    z-index: -10000000;
-    color: white;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: black;
+  z-index: -10000000;
+  color: white;
 }
 
 a {
@@ -20,52 +20,50 @@ a {
 
 * {
   box-sizing: border-box;
-
 }
 
 .container {
   position: relative;
   margin: 0 auto;
-  width: max(40%, 600px);
-  @media (max-width: 1000px) {
-    width: 100%;
-    }
+  width: min(100%, 500px);
 }
 
-audio{
+audio {
   position: fixed;
   top: 0;
-  right:0;
+  right: 0;
   z-index: 1000000;
 }
 
-.top-bar{
+.top-bar {
   z-index: 1000;
   position: sticky;
   top: 0px;
   font-family: Lobster;
   font-size: 300%;
   margin: 3vw 0;
- /*  height: 7vh; */
+  /*  height: 7vh; */
   background: black;
 }
 
+.placeHolder {
+  aspect-ratio: 1;
+  width: 100%;
+}
 
-.post:first-of-type{
+.post:first-of-type {
   margin: 0 auto;
 }
-.post{
+.post {
   display: block;
   position: relative;
   background-color: transparent;
 
   margin: 30px auto;
-  border: lightgrey 1px solid;
+  /*   border: lightgrey 1px solid; */
   border-radius: 1em;
 
-
-
-  .cache{
+  .cache {
     /* display: none; */
     top: 0;
     z-index: -1;
@@ -74,37 +72,46 @@ audio{
     height: 100%;
     background-color: black;
   }
-  
 
-  .post-title{
+  .post-title {
     display: flex;
     padding: 1em;
+    justify-content: space-between;
+    height: 10px;
 
-    .dots{
-  
-      width: 100%;
-      height: 40px;
-      color: black;
-      
-    
+    .dots {
+      /* width: 100%; */
+      /*    height: 100%; */
+      color: white;
+    }
+    .name {
+      height: 100%;
+      .profile-picture {
+        height: 100%;
+        img {
+          display: none;
+          object-fit: cover;
+        }
+      }
     }
   }
 
-  .video{
+  .video {
     position: relative;
     width: 100%;
     z-index: -4;
   }
 
-  .desc{
+  .desc {
     padding: 0.5vh 1em;
-  /*   display: block; */
+    /*   display: block; */
     position: relative;
     text-align: justify;
     width: 100%;
-    font-weight: 100;
+    font-weight: 300;
+    font-size: medium;
 
-    .descName{
+    .descName {
       margin-right: 5px;
       display: inline;
       font-weight: 400;
@@ -114,7 +121,7 @@ audio{
 
 .controls {
   z-index: 10000;
-/*   display: none; */
+  /*   display: none; */
   position: fixed;
 }
 
@@ -127,4 +134,3 @@ audio{
     background: black;
   }
 } */
-
