@@ -8,10 +8,11 @@ import {
 import { useIntersectionObserver } from 'react-intersection-observer-hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faDotCircle } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 import { motion, AnimatePresence } from 'framer-motion';
+
+import Buttons from './Buttons';
 
 const Post = forwardRef((props, ref) => {
   const [refObs, { entry }] = useIntersectionObserver({
@@ -21,6 +22,7 @@ const Post = forwardRef((props, ref) => {
 
   const [cacheVisibility, setCache] = useState(true);
   const [lyric, setLyric] = useState([]);
+  const [dur, setDur] = useState(1);
 
   const videoRef = useRef();
 
@@ -79,7 +81,7 @@ const Post = forwardRef((props, ref) => {
         'For the things that you have done',
       ];
 
-    return ['Praise'];
+    return [];
   };
 
   //visibilty update
@@ -87,18 +89,25 @@ const Post = forwardRef((props, ref) => {
     const time = calculateTimings(props.audioRef.current.currentTime);
     if (!isVisible && videoRef.current) {
       videoRef.current.pause();
+      setDur(0);
+      setCache(true);
     }
     if (isVisible && videoRef.current /*  && props.started.current */) {
       videoRef.current.currentTime = time;
       videoRef.current.play();
+      if (time == -1) {
+        setLyric([]);
+        setCache(true);
+      }
     }
   }, [isVisible]);
 
   //onTimeUpate, fires when video is playing
   const onTimeUpdate = () => {
+    setDur(1);
     console.log(isVisible);
     const time = calculateTimings(props.audioRef.current.currentTime);
-    if (Math.abs(videoRef.current.currentTime - time > 0.3)) {
+    if (Math.abs(videoRef.current.currentTime - time) > 0.3) {
       videoRef.current.currentTime = time;
     }
     setCache(false);
@@ -121,18 +130,17 @@ const Post = forwardRef((props, ref) => {
         {<FontAwesomeIcon className="dots" icon={faEllipsisVertical} />}
       </div>
 
-      {
-        <AnimatePresence>
-          {cacheVisibility && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="cache"
-            ></motion.div>
-          )}
-        </AnimatePresence>
-      }
+      <AnimatePresence>
+        {cacheVisibility && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: dur }}
+            className="cache"
+          ></motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="placeHolder">
         {isVisible && (
@@ -143,11 +151,13 @@ const Post = forwardRef((props, ref) => {
             ref={videoRef}
             muted
             src={video}
-            preload
+            preload="true"
             loop
           ></video>
         )}
       </div>
+
+      <Buttons />
 
       <div className="desc">
         <div className="descName">{name}</div>

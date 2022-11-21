@@ -1,4 +1,4 @@
-import { TopBar } from './TopBar';
+import { TopBar } from '../components/TopBar';
 import Head from 'next/head';
 import data from '../components/data.json';
 import { useRef, useEffect, useState } from 'react';
