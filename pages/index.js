@@ -18,6 +18,10 @@ export default function Home() {
   const [track, setTrack] = useState(null);
   const [analyser, setanalyser] = useState(null);
 
+  const audioContext = useRef(null);
+  const source = useRef(null);
+  const audioAnalyser = useRef(null);
+
   const [posts, setPosts] = useState(() => {
     let post = data.posts;
     for (let index = 0; index < 9; index++) {
@@ -34,20 +38,26 @@ export default function Home() {
   useEffect(() => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-    if (audioCtx) return;
+    /*     if (audioCtx) return; */
+    if (audioContext.current) return;
     const AC = new AudioContext();
     AC.resume();
-    setAudioCtx(AC);
+    /*  setAudioCtx(AC); */
+    audioContext.current = AC;
 
     const TR = AC.createMediaElementSource(audio.current);
-    setTrack(TR);
+    /*   setTrack(TR); */
+    source.current = TR;
 
     const AN = AC.createAnalyser();
-    setanalyser(AN);
+    /*   setanalyser(AN); */
+    audioAnalyser.current = AN;
 
     TR.connect(AN);
     AN.connect(AC.destination);
     AN.fftSize = 32;
+
+    animate();
   }, []);
 
   useEffect(() => {
@@ -55,10 +65,10 @@ export default function Home() {
   }, [analyser]);
 
   const animate = () => {
-    if (analyser) {
-      const bufferLength = analyser.frequencyBinCount;
+    if (audioAnalyser.current) {
+      const bufferLength = audioAnalyser.current.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      analyser.getByteFrequencyData(dataArray);
+      audioAnalyser.current.getByteFrequencyData(dataArray);
 
       bar.current.style.height = dataArray[2] + 'px';
       /* console.log(bar.current.style.height); */
@@ -97,8 +107,8 @@ export default function Home() {
       <div
         className="hello"
         onClick={() => {
-          if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
+          if (audioContext.current.state === 'suspended') {
+            audioContext.current.resume();
           }
 
           audio.current.play();

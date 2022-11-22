@@ -41,11 +41,12 @@ const Post = forwardRef((props, ref) => {
 
   const calculateTimings = (time) => {
     /*   console.log(time); */
-    if (time < 35.56) return time;
-    if (time < 71.112) return time - 35.56;
+    let epsilon = -0.3;
+    if (time < 35.56) return time - epsilon;
+    if (time < 71.112) return time - 35.56 - epsilon;
     if (time < 124.56) return -1;
-    if (time < 160.12) return time - 124.56;
-    if (time < 195.68) return time - 160.12;
+    if (time < 160.12) return time - 124.56 - epsilon;
+    if (time < 195.68) return time - 160.12 - epsilon;
 
     return -1;
   };
