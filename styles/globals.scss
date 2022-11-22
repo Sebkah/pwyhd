@@ -54,9 +54,10 @@ audio {
 }
 
 .placeHolder {
-  aspect-ratio: 1;
   width: 100%;
-  height: 500px;
+  aspect-ratio: 1/1;
+  height: auto;
+  /*   height: 500px; */
 }
 
 .post:first-of-type {

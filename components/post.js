@@ -105,7 +105,7 @@ const Post = forwardRef((props, ref) => {
   //onTimeUpate, fires when video is playing
   const onTimeUpdate = () => {
     setDur(1);
-    console.log(isVisible);
+    /*  console.log(isVisible); */
     const time = calculateTimings(props.audioRef.current.currentTime);
     if (Math.abs(videoRef.current.currentTime - time) > 0.3) {
       videoRef.current.currentTime = time;
