@@ -93,7 +93,7 @@ const Post = forwardRef((props, ref) => {
       setCache(true);
     }
     if (isVisible && videoRef.current /*  && props.started.current */) {
-      videoRef.current.currentTime = time;
+      videoRef.current.currentTime = time - 0.2;
       videoRef.current.play();
       if (time == -1) {
         setLyric([]);
@@ -108,6 +108,7 @@ const Post = forwardRef((props, ref) => {
     /*  console.log(isVisible); */
     const time = calculateTimings(props.audioRef.current.currentTime);
     if (Math.abs(videoRef.current.currentTime - time) > 0.3) {
+      console.log('resync');
       videoRef.current.currentTime = time;
     }
     setCache(false);
