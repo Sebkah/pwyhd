@@ -4,12 +4,12 @@ import data from '../components/data.json';
 import { useRef, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Post from '../components/post';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
+import Home from '../components/Home';
 
 import { useRaf } from 'rooks';
 
-export default function Home() {
+export default function Index() {
   const audio = useRef(null);
   const videos = useRef([]);
   const bar = useRef(null);
@@ -104,8 +104,7 @@ export default function Home() {
         }}
         src="audio.mp3"
       ></audio>
-      <div
-        className="hello"
+      {/*  <div
         onClick={() => {
           if (audioContext.current.state === 'suspended') {
             audioContext.current.resume();
@@ -115,7 +114,9 @@ export default function Home() {
         }}
       >
         PLAY
-      </div>
+      </div> */}
+
+      {/* <Home /> */}
 
       <TopBar />
 
