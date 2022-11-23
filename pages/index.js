@@ -70,7 +70,7 @@ export default function Home() {
       const dataArray = new Uint8Array(bufferLength);
       audioAnalyser.current.getByteFrequencyData(dataArray);
 
-      bar.current.style.height = dataArray[2] + 'px';
+      /* bar.current.style.height = dataArray[2] + 'px'; */
       /* console.log(bar.current.style.height); */
 
       /*  console.log(dataArray); */
