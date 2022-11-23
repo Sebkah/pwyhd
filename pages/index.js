@@ -98,7 +98,7 @@ export default function Home() {
       ></div>
       <audio
         ref={audio}
-        controls
+        /* controls */
         onSeeking={() => {
           console.log(track.mediaElement.currentTime);
         }}
@@ -114,7 +114,7 @@ export default function Home() {
           audio.current.play();
         }}
       >
-        HELOO
+        PLAY
       </div>
 
       <TopBar />
