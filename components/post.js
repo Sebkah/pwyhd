@@ -125,8 +125,7 @@ const Post = forwardRef((props, ref) => {
           <div className="profile-picture">
             <img src={'/pics/' + slug + '.jpg'} />
           </div>
-
-          {name}
+          <div>{name}</div>
         </div>
         {<FontAwesomeIcon className="dots" icon={faEllipsisVertical} />}
       </div>
