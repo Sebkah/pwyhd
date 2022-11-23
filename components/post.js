@@ -41,11 +41,12 @@ const Post = forwardRef((props, ref) => {
 
   const calculateTimings = (time) => {
     /*   console.log(time); */
-    if (time < 35.56) return time;
-    if (time < 71.112) return time - 35.56;
+    let epsilon = -0.3;
+    if (time < 35.56) return time - epsilon;
+    if (time < 71.112) return time - 35.56 - epsilon;
     if (time < 124.56) return -1;
-    if (time < 160.12) return time - 124.56;
-    if (time < 195.68) return time - 160.12;
+    if (time < 160.12) return time - 124.56 - epsilon;
+    if (time < 195.68) return time - 160.12 - epsilon;
 
     return -1;
   };
@@ -93,7 +94,7 @@ const Post = forwardRef((props, ref) => {
       setCache(true);
     }
     if (isVisible && videoRef.current /*  && props.started.current */) {
-      videoRef.current.currentTime = time;
+      videoRef.current.currentTime = time - 0.2;
       videoRef.current.play();
       if (time == -1) {
         setLyric([]);
@@ -105,9 +106,10 @@ const Post = forwardRef((props, ref) => {
   //onTimeUpate, fires when video is playing
   const onTimeUpdate = () => {
     setDur(1);
-    console.log(isVisible);
+    /*  console.log(isVisible); */
     const time = calculateTimings(props.audioRef.current.currentTime);
     if (Math.abs(videoRef.current.currentTime - time) > 0.3) {
+      console.log('resync');
       videoRef.current.currentTime = time;
     }
     setCache(false);
@@ -124,8 +126,7 @@ const Post = forwardRef((props, ref) => {
           <div className="profile-picture">
             <img src={'/pics/' + slug + '.jpg'} />
           </div>
-
-          {name}
+          <div>{name}</div>
         </div>
         {<FontAwesomeIcon className="dots" icon={faEllipsisVertical} />}
       </div>
